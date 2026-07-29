@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import requests
+import json
 
 app = FastAPI()
 
@@ -12,7 +13,6 @@ class RiderRequest(BaseModel):
 def root():
     with open("index.html", "r") as f:
         return f.read()
-    
 
 @app.post("/parse-rider")
 def parse_rider(req: RiderRequest):
@@ -50,7 +50,11 @@ def parse_rider(req: RiderRequest):
 
     data = response.json()
 
+    # DeepInfra возвращает JSON как строку → нужно распарсить
+    content = data["choices"][0]["message"]["content"]
+    items = json.loads(content)
+
     return {
         "status": "ok",
-        "items": data["choices"][0]["message"]["content"]
+        "items": items
     }
