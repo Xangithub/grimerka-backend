@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import requests
 
@@ -6,6 +7,12 @@ app = FastAPI()
 
 class RiderRequest(BaseModel):
     text: str
+
+@app.get("/", response_class=HTMLResponse)
+def root():
+    with open("index.html", "r") as f:
+        return f.read()
+    
 
 @app.post("/parse-rider")
 def parse_rider(req: RiderRequest):

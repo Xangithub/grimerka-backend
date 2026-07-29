@@ -7,5 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8080"]
+# Railway передаёт порт в переменную PORT, но Dockerfile должен её объявить
+ENV PORT=8080
 
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]
