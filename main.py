@@ -57,6 +57,16 @@ async def parse_file(file: UploadFile = File(...)):
     result = call_openrouter(text)
     return result
 
+@app.get("/test")
+def test():
+    text = "4 стула, 2 микрофона Shure SM58, 1 стол, 1 удлинитель 10м"
+    result = call_openrouter(text)
+    return result
+
+@app.post("/parse")
+async def parse(text: str):
+    return call_openrouter(text)
+
 
 @app.get("/")
 def root():
